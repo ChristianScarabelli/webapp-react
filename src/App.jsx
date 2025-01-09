@@ -1,8 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import BlankLayout from "./layouts/BlankLayout"
+import NotFound from "./pages/notFound"
+
 
 function App() {
 
   return (
-    <h1 className="display-1">ciao</h1>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<BlankLayout />}>
+          <Route path='*' element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
