@@ -43,29 +43,32 @@ export default function HomePage() {
     return (
         <>
             <main className="bg-light p-3">
-                <h2 className="text-center">Movies list</h2>
-                <div>
-                    <form onSubmit={searchMovies}>
-                        <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
-                        <button className="btn">Cerca</button>
-                    </form>
+                <div className="container">
+                    <h2 className="text-center my-3">Movies list</h2>
+                    <div className="mb-4">
+                        <form onSubmit={searchMovies} className="d-flex gap-3">
+                            <input
+                                type="text"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <button className="btn btn-primary">Cerca</button>
+                        </form>
+                    </div>
+                    <section>
+                        {movies.length ? (
+                            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                                {movies.map((movie) => (
+                                    <div key={movie.id} >
+                                        <Card data={movie} />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center">Nessun risultato</div>
+                        )}
+                    </section>
                 </div>
-                <section>
-                    {movies.length ? <ul>
-                        {
-                            movies.map(movie => {
-                                return <li key={movie.id}>
-                                    <Card data={movie}></Card>
-                                </li>
-                            })
-                        }
-                    </ul>
-                        :
-                        <div>
-                            Nessun risultato
-                        </div>
-                    }
-                </section>
             </main>
         </>
     )
