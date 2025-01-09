@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 // Layouts
 import BlankLayout from "./layouts/BlankLayout"
@@ -8,16 +8,15 @@ import DefaultLayout from "./layouts/DefaultLayout"
 import NotFound from "./pages/notFound"
 import Contacts from './pages/Contacts.jsx'
 import AboutUs from './pages/AboutUs.jsx'
-
-
-// movie details
-// homepage
+import HomePage from './pages/HomePage.jsx'
+import MovieDetails from "./pages/movieDetails.jsx"
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/api/movies" />} />
         <Route element={<DefaultLayout />}>
           <Route path="/api/movies">
             <Route index element={<HomePage />} />
