@@ -1,60 +1,50 @@
-const movie = {
-    "id": 1,
-    "title": "Inception",
-    "director": "Christopher Nolan",
-    "genre": "Science Fiction",
-    "release_year": 2010,
-    "abstract": "A skilled thief is given a chance at redemption if he can successfully perform inception.",
-    "image": "http://localhost:3000/movies_cover/inception.jpg",
-    "created_at": "2024-11-29T10:40:13.000Z",
-    "updated_at": "2025-01-09T20:56:19.000Z",
-    "avg_vote": "4.0000",
-    "reviews": [
-        {
-            "id": 1,
-            "movie_id": 1,
-            "name": "Alice",
-            "vote": 5,
-            "text": "A mind-bending masterpiece.",
-            "created_at": "2024-11-29T10:40:13.000Z",
-            "updated_at": "2024-11-29T10:40:13.000Z"
-        },
-        {
-            "id": 2,
-            "movie_id": 1,
-            "name": "Bob",
-            "vote": 4,
-            "text": "Great visuals and a compelling story.",
-            "created_at": "2024-11-29T10:40:13.000Z",
-            "updated_at": "2024-11-29T10:40:13.000Z"
-        },
-        {
-            "id": 3,
-            "movie_id": 1,
-            "name": "Charlie",
-            "vote": 3,
-            "text": "Confusing at times, but worth watching.",
-            "created_at": "2024-11-29T10:40:13.000Z",
-            "updated_at": "2024-11-29T10:40:13.000Z"
-        }
-    ]
-}
-
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import PlaceHolder from '../assets/card-placeholder.jpg'
 import ReviewCard from '../components/ReviewCard'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function MovieDetails() {
+
+    // recupero l'id
+    const { id } = useParams()
+
+    const navigate = useNavigate()
+
+    // stato per il singolo movie per id, null di default
+    const [movie, setMovie] = useState(null)
+
+    // funzione di fetch per il movie
+    function fetchMovie() {
+        axios.get(`${import.meta.env.VITE_API_URL}/movies/${id}`)
+            .then(res => {
+                setMovie(res.data)
+            })
+            .catch(err => {
+                console.error(err)
+                navigate('*')
+            })
+    }
+
+    // rendering dipendente dal cambio dell'id
+    useEffect(() => {
+        fetchMovie()
+    }, [id])
+
     return (
-        <>
+        movie ? <>
             <section className="mt-4">
-                <div className="container d-flex align-items-start gap-3">
+                <div className='container mb-4'>
+                    <button onClick={() => navigate(-1)} className='btn btn-primary btn-sm'>Go back</button>
+                </div>
+                <div className="container d-flex align-items-start gap-4">
                     <figure>
                         <img src={movie.image ? movie.image : PlaceHolder} className="img-fluid" style={{ maxWidth: '225px' }} />
                     </figure>
                     <div className='d-flex flex-column gap-2'>
                         <h2>{movie.title}</h2>
                         <h5 className=" ">{movie.director}</h5>
-                        <div className="d-flex gap-2">
+                        <div className="d-flex gap-2 text-muted">
                             <small>{movie.release_year}</small>
                             <small>{movie.genre}</small>
                         </div>
@@ -63,16 +53,22 @@ export default function MovieDetails() {
                 </div>
             </section>
             <section>
-                <div className="container my-2 d-flex align-items-center justify-content-between">
-                    <h2>Reviews</h2>
+                <div className="container my-3 d-flex align-items-center justify-content-between">
+                    <h3>Reviews</h3>
                     <div>
                         <strong>Media: {movie.avg_vote}</strong>
                     </div>
                 </div>
-                <div className='container my-3'>
-                    <ReviewCard />
-                </div>
+                {movie.reviews.length ?
+                    <ul className='container d-flex flex-column gap-5 my-4'>
+                        {movie.reviews.map(review => (
+                            <ReviewCard review={review} key={review.id} />
+                        ))}
+                    </ul> :
+                    <div>Nessuna recensione</div>
+                }
             </section>
-        </>
+        </> :
+            <div>Loading movie...</div>
     )
 }
