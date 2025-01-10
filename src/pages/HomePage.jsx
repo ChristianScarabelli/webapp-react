@@ -5,9 +5,6 @@ import axios from "axios"
 
 export default function HomePage() {
 
-    // url base
-    const BASE_URI = 'http://localhost:3000'
-
     // stato per i movies
     const [movies, setMovies] = useState([])
 
@@ -16,7 +13,7 @@ export default function HomePage() {
 
     // fetch dei movies (con params search per il filtro)
     function fetchMovies() {
-        axios.get(`${BASE_URI}/api/movies`, {
+        axios.get(`${import.meta.env.VITE_API_URL}/movies`, {
             params: {
                 search: search
             }
@@ -44,8 +41,8 @@ export default function HomePage() {
         <>
             <main className="bg-light p-3">
                 <div className="container">
-                    <h2 className="text-center my-3">Movies list</h2>
-                    <div className="mb-4">
+                    <div className="d-flex align-items-center justify-content-between py-3">
+                        <h2 className="my-3">Movies list</h2>
                         <form onSubmit={searchMovies} className="d-flex gap-3">
                             <input
                                 type="text"

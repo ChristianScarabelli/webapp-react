@@ -11,20 +11,26 @@ export default function Card({ data }) {
                 className="card-img img-fluid h-100"
                 style={{ objectFit: "cover" }}
             />
-            <div className="card-img-overlay d-flex flex-column justify-content-end">
-                <h5 className="card-title text-white mb-1 mt-auto">{title}</h5>
-                <h6 className="card-title text-white-50 mb-2">{director}</h6>
-                <div className="d-flex gap-2 text-white-50">
-                    <small>{release_year}</small>
-                    <small>{genre}</small>
+            <div className="card-img-overlay p-0 d-flex flex-column justify-content-end">
+                <div className="p-3 rounded-bottom" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                    <h5 className="card-title text-white mb-2">{title}</h5>
+                    <h6 className="card-title text-white-50 mb-2 d-none d-lg-block">{director}</h6>
+                    <div className="d-flex gap-2 text-white-50 d-none d-lg-block">
+                        <small>{release_year}</small>
+                        <small>{genre}</small>
+                    </div>
+                    <p className="card-text text-white mt-2 d-none d-lg-block">
+                        {abstract}
+                    </p>
+                    <div className="d-flex flex-column g-2 align-items-center">
+                        <span className="badge bg-primary mb-3 align-self-start">{avg_vote}</span>
+                        <Link to={`/api/books/${id}`} className="btn btn-primary btn-sm align-self-start">
+                            See more
+                        </Link>
+                    </div>
+
                 </div>
-                <p className="card-text text-white mt-2">
-                    {abstract}
-                </p>
-                <span className="badge bg-primary mb-3">{avg_vote}</span>
-                <Link to={`/api/books/${id}`} className="btn btn-light btn-sm">
-                    See more
-                </Link>
+
             </div>
         </div>
     );
