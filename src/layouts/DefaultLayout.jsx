@@ -9,7 +9,7 @@ export default function DefaultLayout() {
             <header>
                 <Header />
             </header>
-            <main className="flex-grow-1">
+            <main className="flex-grow-1 bg-light">
                 <Outlet />
             </main>
             <footer>
