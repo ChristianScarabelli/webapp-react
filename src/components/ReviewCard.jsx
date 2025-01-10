@@ -1,17 +1,19 @@
+import StarsVote from "./StarsVote"
+
 export default function ReviewCard({ review }) {
 
     // destrutturo la prop review che mi arriverà dal map delle reviews dell'oggetto movie(per id)
     const { vote, text, name } = review
 
     return (
-        <div class="card">
-            <div class="card-header">
-                {vote}
+        <div className="card">
+            <div className="card-header">
+                <StarsVote style={{ width: "24px", height: "24px" }} vote={vote} />
             </div>
-            <div class="card-body">
-                <blockquote class="blockquote mb-0">
+            <div className="card-body">
+                <blockquote className="blockquote mb-0">
                     <p>{text}</p>
-                    <footer class="blockquote-footer">{name}</footer>
+                    <footer className="blockquote-footer">{name}</footer>
                 </blockquote>
             </div>
         </div>

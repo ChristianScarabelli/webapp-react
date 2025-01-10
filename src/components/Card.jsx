@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Placeholder from "../assets/card-placeholder.jpg";
+import StarsVote from "./StarsVote";
 
 export default function Card({ data }) {
     const { id, title, image, abstract, avg_vote } = data;
@@ -18,7 +19,9 @@ export default function Card({ data }) {
                         {abstract}
                     </p>
                     <div className="d-flex flex-column g-2 align-items-center">
-                        <span className="badge bg-primary mb-3 align-self-start">{avg_vote}</span>
+                        <span className=" mb-3 align-self-start">
+                            <StarsVote style={{ width: "24px", height: "24px" }} vote={avg_vote} />
+                        </span>
                         <Link to={`/api/movies/${id}`} className="btn btn-primary btn-sm align-self-start">
                             See more
                         </Link>

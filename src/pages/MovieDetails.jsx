@@ -3,6 +3,7 @@ import PlaceHolder from '../assets/card-placeholder.jpg'
 import ReviewCard from '../components/ReviewCard'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import StarsVote from '../components/StarsVote'
 
 export default function MovieDetails() {
 
@@ -39,7 +40,7 @@ export default function MovieDetails() {
                 </div>
                 <div className="container d-flex align-items-start gap-4">
                     <figure>
-                        <img src={movie.image ? movie.image : PlaceHolder} className="img-fluid" style={{ maxWidth: '225px' }} />
+                        <img src={movie.image ? movie.image : PlaceHolder} className="img-fluid rounded" style={{ maxWidth: '225px' }} />
                     </figure>
                     <div className='d-flex flex-column gap-2'>
                         <h2>{movie.title}</h2>
@@ -55,8 +56,9 @@ export default function MovieDetails() {
             <section>
                 <div className="container my-3 d-flex align-items-center justify-content-between">
                     <h3>Reviews</h3>
-                    <div>
-                        <strong>Media: {movie.avg_vote}</strong>
+                    <div className='d-flex flex-row align-items-center'>
+                        <strong className='me-3'>Media: </strong>
+                        <StarsVote style={{ width: "32px", height: "32px" }} vote={movie.avg_vote} />
                     </div>
                 </div>
                 {movie.reviews.length ?
@@ -83,7 +85,7 @@ export default function MovieDetails() {
                         <div className="col-md-4">
                             <label htmlFor="rating" className="form-label">Rating</label>
                             <select id="rating" className="form-select">
-                                <option selected>Choose...</option>
+                                <option value=''>Choose...</option>
                                 <option value='1'>1</option>
                                 <option value='2'>2</option>
                                 <option value='3'>3</option>
@@ -92,7 +94,7 @@ export default function MovieDetails() {
                             </select>
                         </div>
                         <div className="col-12">
-                            <button className="btn btn-primary">Sign in</button>
+                            <button className="btn btn-primary">Publish</button>
                         </div>
                     </form>
                 </div>
