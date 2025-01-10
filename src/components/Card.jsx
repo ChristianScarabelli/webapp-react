@@ -24,7 +24,7 @@ export default function Card({ data }) {
                     </p>
                     <div className="d-flex flex-column g-2 align-items-center">
                         <span className="badge bg-primary mb-3 align-self-start">{avg_vote}</span>
-                        <Link to={`/api/books/${id}`} className="btn btn-primary btn-sm align-self-start">
+                        <Link to={`/api/movies/${id}`} className="btn btn-primary btn-sm align-self-start">
                             See more
                         </Link>
                     </div>
