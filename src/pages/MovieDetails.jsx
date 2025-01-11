@@ -57,8 +57,9 @@ export default function MovieDetails() {
                 <div className="container my-3 d-flex align-items-center justify-content-between">
                     <h3>Reviews</h3>
                     <div className='d-flex flex-row align-items-center'>
-                        <strong className='me-3'>Media: </strong>
+                        <strong className='me-3'>Vote: </strong>
                         <StarsVote style={{ width: "32px", height: "32px" }} vote={movie.avg_vote} />
+                        <span>({movie.reviews.length})</span>
                     </div>
                 </div>
                 {movie.reviews.length ?
@@ -72,8 +73,8 @@ export default function MovieDetails() {
             </section>
             <section className='my-5'>
                 <div className="container">
-                    <h4>Write your reviews</h4>
-                    <form className="row g-3">
+                    <h4 className='mb-4'>Write your reviews</h4>
+                    <form className="row g-3 border rounded p-3">
                         <div className="col-12">
                             <label htmlFor="name" className="form-label">Name</label>
                             <input type="text" className="form-control" id="name" placeholder="Write your name..." />

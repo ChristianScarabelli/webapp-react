@@ -1,11 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"
 
 export default function NavBar() {
     const menu = [
         { name: "Home", path: "/api/movies" },
         { name: "About us", path: "/about" },
         { name: "Contacts", path: "/contacts" },
-    ];
+    ]
 
     return (
         <nav className="nav nav-underline">
