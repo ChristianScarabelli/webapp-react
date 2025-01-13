@@ -1,9 +1,10 @@
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import PlaceHolder from '../assets/card-placeholder.jpg'
 import ReviewCard from '../components/ReviewCard'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import StarsVote from '../components/StarsVote'
+import ReviewForm from '../components/ReviewForm'
 
 export default function MovieDetails() {
 
@@ -23,6 +24,7 @@ export default function MovieDetails() {
             })
             .catch(err => {
                 console.error(err)
+                // reindirizzo alla pagina 404
                 navigate('*')
             })
     }
@@ -72,35 +74,8 @@ export default function MovieDetails() {
                 }
             </section>
             <section className='my-5'>
-                <div className="container">
-                    <h4 className='mb-4'>Write your reviews</h4>
-                    <form className="row g-3 border rounded p-3">
-                        <div className="col-12">
-                            <label htmlFor="name" className="form-label">Name</label>
-                            <input type="text" className="form-control" id="name" placeholder="Write your name..." />
-                        </div>
-                        <div className="col-12">
-                            <label htmlFor="review" className="form-label">Review</label>
-                            <textarea className="form-control" id="review" rows="3" placeholder='Write your review here...'></textarea>
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="rating" className="form-label">Rating</label>
-                            <select id="rating" className="form-select">
-                                <option value=''>Choose...</option>
-                                <option value='1'>1</option>
-                                <option value='2'>2</option>
-                                <option value='3'>3</option>
-                                <option value='4'>4</option>
-                                <option value='5'>5</option>
-                            </select>
-                        </div>
-                        <div className="col-12">
-                            <button className="btn btn-primary">Publish</button>
-                        </div>
-                    </form>
-                </div>
+                <ReviewForm id={id} onSucces={fetchMovie} />
             </section>
-
         </> :
             <div>Loading movie...</div>
     )
