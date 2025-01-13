@@ -16,8 +16,12 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
     // stato per prendere i dati dal form  (di default con campi vuoti/oggetto vuoto)
     const [formData, setFormData] = useState(initialFormData)
 
-    // stato per la validità del form, che ne determina l'invio (true di default)
+    // stato per determinare se il form è stato  (true di default)
+    // utile per gli stili
     const [isFormValid, setIsFormValid] = useState(true)
+
+    // stato per il messaggio di errore
+    const [errorMessage, setErrorMessage] = useState('')
 
     // funzione per collegare value e name degli input del form con l'evento
     function handleFormData(event) {
@@ -41,6 +45,29 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
             vote: parseInt(formData.vote)
         }
 
+        // VALIDAZIONE dell'oggetto 'data' prima che venga inviato con il POST
+        // se esito negativo blocco la chiamata e genero messaggio di errore
+        if (!data.vote || data.vote < 1 || data.vote > 5) {
+            console.log('Form is invalid!')
+            setIsFormValid(false)
+            setErrorMessage('Vote must be a number between 1 and 5')
+            return
+        }
+
+        if (!data.name || data.name.trim() === '') {
+            console.log('Form is invalid!')
+            setIsFormValid(false)
+            setErrorMessage('Name is required')
+            return
+        }
+
+        if (!data.text || data.text.trim() === '') {
+            console.log('Form is invalid!')
+            setIsFormValid(false)
+            setErrorMessage('Review is required')
+            return
+        }
+
         // invio l'oggetto data alla rotta 
         axios.post(`${import.meta.env.VITE_API_URL}/movies/${id}/reviews`, data)
             .then(res => {
@@ -62,9 +89,15 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
         <div className="container">
             <h4 className='mb-4'>Write your reviews</h4>
             <form onSubmit={storeReview} className="row g-3 border rounded p-3">
+                <div className="d-flex align-items-center">
+                    <span className="form-label ms-auto text-muted" style={{ fontSize: '0.8em' }}>Fields required *</span>
+                </div>
                 <div className="col-12">
-                    <label htmlFor="name" className="form-label">Name</label>
+                    <label htmlFor="name" className="form-label">Name *</label>
                     <input
+                        required
+                        minLength='1'
+                        maxLength='255'
                         type="text"
                         id="name"
                         name='name'
@@ -76,6 +109,7 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                 <div className="col-12">
                     <label htmlFor="text" className="form-label">Review</label>
                     <textarea
+                        required
                         id="text"
                         name='text'
                         value={formData.text}
@@ -86,8 +120,11 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                     </textarea>
                 </div>
                 <div className="col-md-4">
-                    <label htmlFor="vote" className="form-label">Rating</label>
+                    <label htmlFor="vote" className="form-label">Rating *</label>
                     <select
+                        required
+                        min='1'
+                        max='5'
                         id="vote"
                         name='vote'
                         value={formData.vote}
@@ -101,8 +138,11 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                         <option value='5'>5</option>
                     </select>
                 </div>
-                <div className="col-12">
-                    <button className="btn btn-primary">Publish</button>
+                <div className="col-12 d-flex align-items-center">
+                    {!isFormValid && errorMessage && (
+                        <span className="text-danger animate__animated animate__headShake animate__fast animate__infinite infinite">The data are not correct!</span>
+                    )}
+                    <button className="btn btn-primary ms-auto">Publish</button>
                 </div>
             </form>
         </div>
