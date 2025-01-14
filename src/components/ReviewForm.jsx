@@ -16,22 +16,23 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
 
     const { setIsLoading } = useContext(GlobalContext)
 
-    // stato per prendere i dati dal form  (di default con campi vuoti/oggetto vuoto)
+    // stato per gestire/prendere i dati dal form  (di default con campi vuoti/oggetto vuoto)
     const [formData, setFormData] = useState(initialFormData)
 
-    // stato per determinare se il form è stato  (true di default)
+    // stato per determinare se il form è valido ed è stato inviato  (true di default)
     // utile per gli stili
     const [isFormValid, setIsFormValid] = useState(true)
 
-    // stato per il messaggio di errore
+    // stato per il messaggio di errore specifico per gli input del form
     const [errorMessage, setErrorMessage] = useState('')
 
-    // funzione per collegare value e name degli input del form con l'evento
+    // funzione per aggiornare lo stato dei dati del form, (agli eventi degli input da parte dell'utente)
     function handleFormData(event) {
+        // collego l'evento con le proprietà value e name degli input
         const { value, name: inputName } = event.target
 
-        // aggiorno lo stato dei dati del form 
-        // con il nuovo valore derivato dagli input dell'utente
+        // aggiorno lo stato dei dati del form (originari + i nuovi)
+        // collego proprietà name con valore value
         setFormData({
             ...formData,
             [inputName]: value
@@ -99,8 +100,8 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
     return (
         <div className="container">
             <form onSubmit={storeReview} className="row g-3 border rounded p-3">
-                <div className="col-12 card-header text-center">
-                    <h4 className=''>Write your reviews</h4>
+                <div className="col-12 card-header text-center border-bottom">
+                    <h4 className='mb-4'>Write your reviews</h4>
                 </div>
                 <div className="d-flex align-items-center">
                     <span className="form-label ms-auto text-muted" style={{ fontSize: '0.8em' }}>Fields required *</span>
