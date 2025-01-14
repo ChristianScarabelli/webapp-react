@@ -1,12 +1,21 @@
+// React
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import PlaceHolder from '../assets/card-placeholder.jpg'
-import ReviewCard from '../components/ReviewCard'
-import { useEffect, useState } from 'react'
 import axios from 'axios'
+
+// Context
+import GlobalContext from '../contexts/GlobalContext'
+
+// Components
 import StarsVote from '../components/StarsVote'
 import ReviewForm from '../components/ReviewForm'
+import ReviewCard from '../components/ReviewCard'
+
+import PlaceHolder from '../assets/card-placeholder.jpg'
 
 export default function MovieDetails() {
+
+    const { setIsLoading } = useContext(GlobalContext)
 
     // recupero l'id
     const { id } = useParams()
@@ -18,6 +27,9 @@ export default function MovieDetails() {
 
     // funzione di fetch per il movie
     function fetchMovie() {
+
+        setIsLoading(true)
+
         axios.get(`${import.meta.env.VITE_API_URL}/movies/${id}`)
             .then(res => {
                 setMovie(res.data)
@@ -27,6 +39,9 @@ export default function MovieDetails() {
                 // reindirizzo alla pagina 404
                 navigate('*')
             })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
 
     // rendering dipendente dal cambio dell'id
@@ -35,7 +50,7 @@ export default function MovieDetails() {
     }, [id])
 
     return (
-        movie ? <>
+        movie && <>
             <section className="mt-4">
                 <div className='container mb-4'>
                     <button onClick={() => navigate(-1)} className='btn btn-primary btn-sm'>Go back</button>
@@ -76,7 +91,6 @@ export default function MovieDetails() {
             <section className='my-5'>
                 <ReviewForm id={id} onSucces={fetchMovie} />
             </section>
-        </> :
-            <div>Loading movie...</div>
+        </>
     )
 }

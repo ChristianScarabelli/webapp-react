@@ -17,7 +17,7 @@ import MovieDetails from "./pages/movieDetails.jsx"
 function App() {
 
   // stato per il loading della pagina (false di default)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <GlobalContext.Provider value={{ isLoading, setIsLoading }} >

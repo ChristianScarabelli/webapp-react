@@ -1,9 +1,13 @@
-import Card from "../components/Card"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import axios from "axios"
+import GlobalContext from "../contexts/GlobalContext"
+import Card from "../components/Card"
 
 
 export default function HomePage() {
+
+    // recupero stato caricamento pagina dal context
+    const { setIsLoading } = useContext(GlobalContext)
 
     // stato per i movies
     const [movies, setMovies] = useState([])
@@ -13,6 +17,10 @@ export default function HomePage() {
 
     // fetch dei movies (con params search per il filtro)
     function fetchMovies() {
+
+        // metto a true prima della chiamata (così si mostrerà)
+        setIsLoading(true)
+
         axios.get(`${import.meta.env.VITE_API_URL}/movies`, {
             params: {
                 search: search
@@ -23,6 +31,11 @@ export default function HomePage() {
             })
             .catch(err => {
                 console.error(err)
+            })
+            // indipendentemente dal risultato della chiamata 
+            // imposto a false così da togliere lo spinner 
+            .finally(() => {
+                setIsLoading(false)
             })
     }
 

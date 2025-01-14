@@ -1,5 +1,6 @@
+import { useContext, useState } from "react"
 import axios from "axios"
-import { useState } from "react"
+import GlobalContext from "../contexts/GlobalContext"
 
 // oggetto per i dati base del form
 const initialFormData = {
@@ -12,6 +13,8 @@ const initialFormData = {
 // i dati sono nell'elemento padre (pagina SHOW, quindi li passerò come props)
 // l'id verrà da useParams() e onSuccess() conterrà la funzione di fetch del movie
 export default function ReviewForm({ id, onSucces = () => { } }) {
+
+    const { setIsLoading } = useContext(GlobalContext)
 
     // stato per prendere i dati dal form  (di default con campi vuoti/oggetto vuoto)
     const [formData, setFormData] = useState(initialFormData)
@@ -68,6 +71,13 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
             return
         }
 
+        // setto a true prima della chiamata 
+        // (con la funzione onSuccess() nel then è già a true e viene anche reimpostata a false)
+        // solo in caso di errori si mette a false (nel catch), 
+        // per far ritornare la superficie cliccabile
+        // e per mostrare subito lo spinner senza effetto ritardato dall'attesa della chiamata
+        setIsLoading(true)
+
         // invio l'oggetto data alla rotta 
         axios.post(`${import.meta.env.VITE_API_URL}/movies/${id}/reviews`, data)
             .then(res => {
@@ -81,14 +91,17 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                 console.log(err)
                 // se l'eisto è negativo blocco l'invio
                 setIsFormValid(false)
+                setIsLoading(false)
             })
     }
 
 
     return (
         <div className="container">
-            <h4 className='mb-4'>Write your reviews</h4>
             <form onSubmit={storeReview} className="row g-3 border rounded p-3">
+                <div className="col-12 card-header text-center">
+                    <h4 className=''>Write your reviews</h4>
+                </div>
                 <div className="d-flex align-items-center">
                     <span className="form-label ms-auto text-muted" style={{ fontSize: '0.8em' }}>Fields required *</span>
                 </div>
