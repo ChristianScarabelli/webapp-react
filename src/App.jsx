@@ -23,7 +23,7 @@ function App() {
     <GlobalContext.Provider value={{ isLoading, setIsLoading }} >
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/api/movies" />} />
+          <Route path="/" element={<Navigate to="/api/movies" replace />} />
           <Route element={<DefaultLayout />}>
             <Route path="/api/movies">
               <Route index element={<HomePage />} />
