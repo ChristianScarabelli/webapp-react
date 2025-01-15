@@ -14,7 +14,7 @@ const initialFormData = {
 // l'id verrà da useParams() e onSuccess() conterrà la funzione di fetch del movie
 export default function ReviewForm({ id, onSucces = () => { } }) {
 
-    const { setIsLoading } = useContext(GlobalContext)
+    const { isLoading, setIsLoading } = useContext(GlobalContext)
 
     // stato per gestire/prendere i dati dal form  (di default con campi vuoti/oggetto vuoto)
     const [formData, setFormData] = useState(initialFormData)
@@ -29,13 +29,13 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
     // funzione per aggiornare lo stato dei dati del form, (agli eventi degli input da parte dell'utente)
     function handleFormData(event) {
         // collego l'evento con le proprietà value e name degli input
-        const { value, name: inputName } = event.target
+        const { value, checked, type, name } = event.target
 
         // aggiorno lo stato dei dati del form (originari + i nuovi)
         // collego proprietà name con valore value
         setFormData({
             ...formData,
-            [inputName]: value
+            [name]: type === 'checkbox' ? checked : value
         })
     }
 
@@ -117,6 +117,7 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                         name='name'
                         value={formData.name}
                         onChange={handleFormData}
+                        aria-invalid={!isFormValid}
                         className="form-control"
                         placeholder="Write your name..." />
                 </div>
@@ -128,6 +129,7 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                         name='text'
                         value={formData.text}
                         onChange={handleFormData}
+                        aria-invalid={!isFormValid}
                         className="form-control"
                         rows="3"
                         placeholder='Write your review here...'>
@@ -143,6 +145,7 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                         name='vote'
                         value={formData.vote}
                         onChange={handleFormData}
+                        aria-invalid={!isFormValid}
                         className="form-select">
                         <option value=''>Choose...</option>
                         <option value='1'>1</option>
@@ -154,9 +157,9 @@ export default function ReviewForm({ id, onSucces = () => { } }) {
                 </div>
                 <div className="col-12 d-flex align-items-center">
                     {!isFormValid && errorMessage && (
-                        <span className="text-danger animate__animated animate__headShake animate__fast animate__infinite infinite">The data are not correct!</span>
+                        <span className="text-danger animate__animated animate__headShake animate__fast animate__repeat-1 1">The data are not correct!</span>
                     )}
-                    <button className="btn btn-primary ms-auto">Publish</button>
+                    <button disabled={isLoading} className="btn btn-primary ms-auto">{isLoading ? 'Publishing...' : 'Publish'}</button>
                 </div>
             </form>
         </div>
